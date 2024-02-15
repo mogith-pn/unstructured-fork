@@ -17,6 +17,7 @@ from .pinecone import PineconeWriter
 from .qdrant import QdrantWriter
 from .sql import SqlWriter
 from .weaviate import WeaviateWriter
+from .clarifai import ClarifaiWriter
 
 writer_map: t.Dict[str, t.Type[Writer]] = {
     "azure": AzureWriter,
@@ -35,6 +36,7 @@ writer_map: t.Dict[str, t.Type[Writer]] = {
     "s3": S3Writer,
     "sql": SqlWriter,
     "weaviate": WeaviateWriter,
+    "clarifai" : ClarifaiWriter
 }
 
 __all__ = ["writer_map"]
