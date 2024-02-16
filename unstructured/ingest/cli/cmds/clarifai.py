@@ -21,6 +21,8 @@ class ClarifaiCliConfig(SimpleClarifaiConfig, CliConfig):
                 type=str,
                 default=None,
                 help="The CLARIFAI_PAT of the user to access clarifai platform apps and models",
+                envvar="CLARIFAI_PAT",
+                show_envvar=True
             ),
             click.Option(
                 ["--app-id"],
