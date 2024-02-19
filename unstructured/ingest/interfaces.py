@@ -23,8 +23,6 @@ from unstructured.ingest.enhanced_dataclass import EnhancedDataClassJsonMixin, e
 from unstructured.ingest.enhanced_dataclass.core import _asdict
 from unstructured.ingest.error import PartitionError, SourceConnectionError
 from unstructured.ingest.logger import logger
-from unstructured.partition.api import partition_via_api
-from unstructured.partition.auto import partition
 from unstructured.staging.base import convert_to_dict, flatten_dict
 
 A = t.TypeVar("A", bound="DataClassJsonMixin")
@@ -198,9 +196,9 @@ class EmbeddingConfig(BaseConfig):
             kwargs["model_name"] = self.model_name
         # TODO make this more dynamic to map to encoder configs
         if self.provider == "langchain-openai":
-            from unstructured.embed.openai import OpenAiEmbeddingConfig, OpenAIEmbeddingEncoder
+            from unstructured.embed.openai import OpenAIEmbeddingConfig, OpenAIEmbeddingEncoder
 
-            return OpenAIEmbeddingEncoder(config=OpenAiEmbeddingConfig(**kwargs))
+            return OpenAIEmbeddingEncoder(config=OpenAIEmbeddingConfig(**kwargs))
         elif self.provider == "langchain-huggingface":
             from unstructured.embed.huggingface import (
                 HuggingFaceEmbeddingConfig,
@@ -208,6 +206,10 @@ class EmbeddingConfig(BaseConfig):
             )
 
             return HuggingFaceEmbeddingEncoder(config=HuggingFaceEmbeddingConfig(**kwargs))
+        elif self.provider == "octoai":
+            from unstructured.embed.octoai import OctoAiEmbeddingConfig, OctoAIEmbeddingEncoder
+
+            return OctoAIEmbeddingEncoder(config=OctoAiEmbeddingConfig(**kwargs))
         else:
             raise ValueError(f"{self.provider} not a recognized encoder")
 
@@ -539,6 +541,9 @@ class BaseSingleIngestDoc(BaseIngestDoc, IngestDocJsonMixin, ABC):
         partition_config: PartitionConfig,
         **partition_kwargs,
     ) -> t.List[Element]:
+        from unstructured.partition.api import partition_via_api
+        from unstructured.partition.auto import partition
+
         if not partition_config.partition_by_api:
             logger.debug("Using local partition")
             elements = partition(

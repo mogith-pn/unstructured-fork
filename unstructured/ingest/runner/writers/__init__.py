@@ -16,6 +16,7 @@ from .opensearch import OpenSearchWriter
 from .pinecone import PineconeWriter
 from .qdrant import QdrantWriter
 from .sql import SqlWriter
+from .vectara import VectaraWriter
 from .weaviate import WeaviateWriter
 from .clarifai import ClarifaiWriter
 
@@ -35,6 +36,7 @@ writer_map: t.Dict[str, t.Type[Writer]] = {
     "qdrant": QdrantWriter,
     "s3": S3Writer,
     "sql": SqlWriter,
+    "vectara": VectaraWriter,
     "weaviate": WeaviateWriter,
     "clarifai" : ClarifaiWriter
 }
