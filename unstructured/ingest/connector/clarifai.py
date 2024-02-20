@@ -76,21 +76,22 @@ class ClarifaiDestinationConnector(BaseDestinationConnector):
         
     
     def normalize_dict(self, element_dict: dict) -> dict:
-        """Modifying schema of the dict inorder to compile with clarifai input formats"""
+        """Modifying schema of the dict in order to compile with clarifai input formats"""
         return (
             {
                 "input_id" : str(uuid.uuid4().hex),
-                "text" : element_dict["text"],
+                "text" : element_dict.get("text"),
                 "metadata" : {
-                    "url": element_dict["metadata"]["data_source"]["url"],
-                    "date_created": element_dict["metadata"]["data_source"]["date_created"],
-                    "date_modified": element_dict["metadata"]["data_source"]["date_modified"],
-                    "date_processed": element_dict["metadata"]["data_source"]["date_processed"],
-                    "file_directory": element_dict["metadata"]["file_directory"],
-                    "filename": element_dict["metadata"]["filename"],
-                    "filetype": element_dict["metadata"]["filetype"],
-                    "languages": element_dict["metadata"]["languages"],
-                    "last_modified": element_dict["metadata"]["last_modified"],
+                    "url": element_dict.get("metadata", {}).get("data_source", {}).get("url"),
+                    "date_created": element_dict.get("metadata", {}).get("data_source", {}).get("date_created"),
+                    "date_modified": element_dict.get("metadata", {}).get("data_source", {}).get("date_modified"),
+                    "date_processed": element_dict.get("metadata", {}).get("data_source", {}).get("date_processed"),
+                    "record_locator": element_dict.get("metadata", {}).get("data_source", {}).get("record_locator"),
+                    "file_directory": element_dict.get("metadata",{}).get("file_directory"),
+                    "filename": element_dict.get("metadata",{}).get("filename"),
+                    "filetype": element_dict.get("metadata",{}).get("filetype"),
+                    "languages": element_dict.get("metadata",{}).get("languages"),
+                    "last_modified": element_dict.get("metadata",{}).get("last_modified"),
                 }
             }
         )
