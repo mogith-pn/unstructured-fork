@@ -11,7 +11,7 @@ WORK_DIR=$SCRIPT_DIR/workdir/$OUTPUT_FOLDER_NAME
 max_processes=${MAX_PROCESSES:=$(python3 -c "import os; print(os.cpu_count())")}
 writer_processes=$(((max_processes - 1) > 1 ? (max_processes - 1) : 2))
 
-if [-z "$CLARIFAI_PAT"]; then
+if [ -z "$CLARIFAI_PAT" ]; then
     echo "Skipping Clarifai ingest test because CLARIFAI_PAT env var is not set."
     exit 0
 
@@ -56,10 +56,9 @@ response_code=$(curl \
     --location --request POST "https://api.clarifai.com/v2/users/$USER_ID/apps/" \
     --header "Content-Type: application/json" \
     --header "Authorization: Key $CLARIFAI_PAT" \
-    --data-raw '{"apps": [{"id": "$APP_ID"}]}'
+    --data-raw "{\"apps\": [{\"id\": \"$APP_ID\"}]}"
 )
-
-if ["$response_code" -lt 400]; then 
+if [ "$response_code" -lt 400 ]; then 
     echo "App created successfully: $APP_ID"
 else
     echo "Failed to create app $APP_ID: $response_code"

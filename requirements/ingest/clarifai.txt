@@ -30,8 +30,6 @@ charset-normalizer==3.3.2
     #   requests
 clarifai==10.0.1
     # via -r ingest/clarifai.in
-clarifai-grpc==10.0.10
-    # via clarifai
 click==8.1.7
     # via
     #   -c ingest/../base.txt

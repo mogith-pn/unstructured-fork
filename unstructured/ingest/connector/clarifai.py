@@ -108,22 +108,17 @@ class ClarifaiDestinationConnector(BaseDestinationConnector):
             batch = self.write_config.batch_size
             for idx in range (0, len(elements_dict), batch):
                 batch_dict = elements_dict[idx : batch + idx]
-                meta_list = []
+                input_batch = []
                 for elem in batch_dict :
                     meta_struct = Struct()
                     meta_struct.update(elem["metadata"])
-                    meta_list.append(meta_struct)
-                    
-                input_batch = [
-                        self._client.get_text_input(
-                            input_id=batch_dict[i]["input_id"],
-                            raw_text=batch_dict[i]["text"],
-                            metadata=meta_list[i],
+                    input_batch.append(self._client.get_text_input(
+                            input_id=elem["input_id"],
+                            raw_text=elem["text"],
+                            metadata=meta_struct,)
                         )
-                        for i, text in enumerate(batch_dict)
-                    ]
                 result_id = self._client.upload_inputs(inputs=input_batch)
-                logger.debug("Input posted successfully.")
+                logger.debug(f"Input posted successfully into {self.connector_config.app_id}.")
                 
         except Exception as e :
             raise e 
