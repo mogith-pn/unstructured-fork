@@ -84,7 +84,7 @@ PYTHONPATH=. ./unstructured/ingest/main.py \
 no_of_inputs=0
 sleep_time=10
 
-while ["$no_of_inputs" -eq 0]; do
+while [ "$no_of_inputs" -eq 0 ]; do
     echo "checking for no of inputs in clarifai app"
     sleep $sleep_time
 
@@ -98,7 +98,7 @@ done
 
 EXPECTED=8729
 
-if ["$no_of_inputs" -lt 1 ] || ["$no_of_inputs" -ne "$EXPECTED"]; then  
+if [ "$no_of_inputs" -lt 1 ] || [ "$no_of_inputs" -ne "$EXPECTED" ]; then  
     echo "Number of inputs in the clarifai app $APP_ID is less than expected. Test failed."
     exit 1
 
